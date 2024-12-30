@@ -1,33 +1,33 @@
 from Constants import *
 import calendar
 
-def sideBar(pdf):
+def side_bar(pdf):
     
     pdf.setStrokeColor(light_line_color)
     pdf.setFont('UniSansHeavy', 10)
-    tabWidth = 40
+    tab_width = 40
     number_of_tabs = 12 + len(tabs)
-    tabHeight = page_height/number_of_tabs
+    tab_height = page_height/number_of_tabs
 
     for i in range(1,13):
         month_name=calendar.month_name[i]
         pdf.saveState()
-        pdf.translate(page_width - tabWidth,tabHeight*(len(tabs) + 13-i))
+        pdf.translate(page_width - tab_width,tab_height*(len(tabs) + 13-i))
         pdf.rotate(270)
         pdf.setFillColor(medium_bg_color)
-        pdf.rect(0,0,tabHeight,tabWidth, stroke=1,fill = 1)
-        pdf.linkRect(month_name, month_name,(0,0,tabHeight,tabWidth), relative = 1)
+        pdf.rect(0,0,tab_height,tab_width, stroke=1,fill = 1)
+        pdf.linkRect(month_name, month_name,(0,0,tab_height,tab_width), relative = 1)
         pdf.setFillColor(dark_color)
         pdf.drawString(5,5, calendar.month_name[i])
         pdf.restoreState()
 
     for i in range(len(tabs)):
         pdf.saveState()
-        pdf.translate(page_width - tabWidth,tabHeight*(len(tabs) -i))
+        pdf.translate(page_width - tab_width,tab_height*(len(tabs) -i))
         pdf.rotate(270)
         pdf.setFillColor(medium_bg_color)
-        pdf.rect(0,0,tabHeight,tabWidth, stroke=1,fill = 1)
-        pdf.linkRect(tabs[i], tabs[i],(0,0,tabHeight,tabWidth), relative = 1)
+        pdf.rect(0,0,tab_height,tab_width, stroke=1,fill = 1)
+        pdf.linkRect(tabs[i], tabs[i],(0,0,tab_height,tab_width), relative = 1)
         pdf.setFillColor(dark_color)
         pdf.drawString(5,5, tabs[i])
         pdf.restoreState()
@@ -49,7 +49,7 @@ def wrap_text(canvas, text, max_width):
     while text:
         # Find the index of the first space that fits within the max_width
         index = len(text)
-        if(canvas.stringWidth(text[:index], "UniSans", 12) > max_width):
+        if canvas.stringWidth(text[:index], "UniSans", 12) > max_width:
             while canvas.stringWidth(text[:index], "UniSans", 12) > max_width:
                 index -= 1
             index = int(text.rfind(' ', 0, index))

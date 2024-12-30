@@ -1,13 +1,10 @@
-from reportlab.pdfgen import canvas
-from reportlab.lib.units import inch
-from reportlab.platypus import Table, TableStyle
-import calendar
 from datetime import datetime
-from Constants import * 
+from reportlab.platypus import Table, TableStyle
 from Elements import *
 
+
 #This generates the first title page
-def print_titlePage(pdf, title):
+def print_title_page(pdf, title):
 
     #draws the year in the middle of the page
     pdf.setFont('UniSans', 50)
@@ -18,7 +15,7 @@ def print_titlePage(pdf, title):
     pdf.showPage()
 
 #This generates the monthly calendar pages
-def print_monthPage(pdf, month, year):
+def print_month_page(pdf, month, year):
     #Month name as header
     month_name = calendar.month_name[month]
     pdf.bookmarkPage(month_name,left=0,top=20)
@@ -108,27 +105,27 @@ def print_monthPage(pdf, month, year):
             pdf.linkRect(page_name, page_name,(link_x,link_y ,link_x + table_cell_width,link_y -table_cell_height), relative = 1)
     #bottom half of the page below the table
 
-    middle = page_width / 2
+    middle_page = page_width / 2
     #Setting up the colors and fonts I want
     pdf.setFillColor(light_line_color)
     pdf.setStrokeColor(light_line_color)
     #Drawing rectangles where the goals and reflections are going to be
     pdf.rect(header_location_x-2, header_location_y -h - header_height - 42, 225,16, fill = 1)
-    pdf.rect(middle-2, header_location_y -h - header_height - 42, 225,16, fill = 1)
+    pdf.rect(middle_page-2, header_location_y -h - header_height - 42, 225,16, fill = 1)
     pdf.setFont('UniSans', 12)
     pdf.setFillColorRGB(dark_color[0],dark_color[1],dark_color[2])
 
     #drawing string that says goals on the left
     pdf.drawString(header_location_x, header_location_y -h - header_height - 40, "goals")
     #drawing string that says "reflection" in the middle
-    pdf.drawString(middle, header_location_y -h - header_height - 40, "reflection")
+    pdf.drawString(middle_page, header_location_y -h - header_height - 40, "reflection")
 
     #drawing questions
     pdf.setFillColorRGB(text_color[0],text_color[1],text_color[2])
     pdf.setFont('UniSans', 8)
-    pdf.drawString(middle, header_location_y -h - header_height - 60, "What did you acheive this month?")
-    pdf.drawString(middle, header_location_y -h - header_height - 120, "How did you feel about this month?")
-    pdf.drawString(middle, header_location_y -h - header_height - 180, "List 3 things you are grateful for.")
+    pdf.drawString(middle_page, header_location_y -h - header_height - 60, "What did you acheive this month?")
+    pdf.drawString(middle_page, header_location_y -h - header_height - 120, "How did you feel about this month?")
+    pdf.drawString(middle_page, header_location_y -h - header_height - 180, "List 3 things you are grateful for.")
 
     pdf.drawString(header_location_x, header_location_y -h - header_height - 60, "What aspects of yourself do you want to work on?")
     pdf.drawString(header_location_x, header_location_y -h - header_height - 120, "What skills do you want to work on?")
@@ -146,7 +143,7 @@ def print_monthPage(pdf, month, year):
     pdf.setFillColorRGB(text_color[0],text_color[1],text_color[2])
 
     #adding the tabs to the side
-    sideBar(pdf)
+    side_bar(pdf)
     pdf.showPage()
 
 #This generates the daily planner pages
@@ -171,7 +168,7 @@ def print_day_page(pdf,year, month, day):
     end = activeHoursHalf if halfhoursubvision else activeHoursFull
     for i in range(starttime, starttime + end + 1):
         hours.append([str(i%24)])
-        if(halfhoursubvision): #change halfhoursubvision to true if you want the 30 minute subdivision
+        if halfhoursubvision: #change halfhoursubvision to true if you want the 30 minute subdivision
             hours.append([" "])
 
     #HARDCODED: the height of the time table cells 
@@ -191,16 +188,16 @@ def print_day_page(pdf,year, month, day):
 
     #Fillable mood faces
     #size of faces
-    faceSize = 10
+    face_size = 10
     pdf.setFont("UniSans", 18)
     pdf.drawString(middle, 730, "mood:")
     pdf.setStrokeColor(text_color)
     #happyface
-    face(pdf, middle + 100, 730 + faceSize/2, -faceSize/2, faceSize)
+    face(pdf, middle + 100, 730 + face_size/2, -face_size/2, face_size)
     #neutralface
-    face(pdf, middle + 150, 730 + faceSize/2, 0, faceSize)
+    face(pdf, middle + 150, 730 + face_size/2, 0, face_size)
     #sad face
-    face(pdf, middle + 200, 730 + faceSize/2, faceSize/2, faceSize)
+    face(pdf, middle + 200, 730 + face_size/2, face_size/2, face_size)
 
     pdf.drawString(middle, 700, "ToDo:")
     todo_list(pdf, todoLength, middle+10, 680)
@@ -213,10 +210,10 @@ def print_day_page(pdf,year, month, day):
     pdf.setFont("UniSans", 12)
     pdf.setStrokeColor(light_line_color)
     daily_affirmation(pdf, datetime(year, month, day).timetuple().tm_yday)
-    sideBar(pdf)
+    side_bar(pdf)
     pdf.showPage()
 
-def testPage(pdf):
+def test_page(pdf):
     face(pdf, header_location_x, header_location_y, -10)
     pdf.showPage()
 
@@ -227,5 +224,5 @@ def sticker_page(pdf):
     pdf.setFillColor(text_color)
     pdf.drawString(header_location_x, 770, "stickers")
 
-    sideBar(pdf)
+    side_bar(pdf)
     pdf.showPage()
